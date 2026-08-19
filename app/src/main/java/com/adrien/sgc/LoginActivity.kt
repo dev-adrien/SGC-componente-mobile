@@ -31,10 +31,13 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
             auth.signInWithEmailAndPassword(email, senha)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Acesso liberado ao PDV!", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this@LoginActivity, CadastroProdutoActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
                 .addOnFailureListener { erro ->
                     Toast.makeText(this, "Falha no login: ${erro.message}", Toast.LENGTH_LONG).show()
