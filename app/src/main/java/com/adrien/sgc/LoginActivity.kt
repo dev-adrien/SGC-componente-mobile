@@ -42,7 +42,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         txtCadastro.setOnClickListener {
-            Toast.makeText(this, "Direcionando para o cadastro...", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CadastroUsuarioActivity::class.java)
+            startActivity(intent)
         }
     }
 }
