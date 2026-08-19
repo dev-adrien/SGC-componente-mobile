@@ -1,5 +1,6 @@
 package com.adrien.sgc
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +52,16 @@ class CadastroProdutoActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             Toast.makeText(this, "Produto salvo! Preparando código de barras...", Toast.LENGTH_SHORT).show()
 
+                            produto.id = idGerado
 
+                            val intent = Intent(
+                                this@CadastroProdutoActivity,
+                                CodigoBarrasActivity::class.java
+                            )
+                            intent.putExtra("PRODUTO_SALVO", produto)
+                            startActivity(intent)
+
+                            finish()
                         }
                 }
                 .addOnFailureListener { erro ->
