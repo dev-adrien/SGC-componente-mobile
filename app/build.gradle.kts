@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.zxing:core:3.5.3")
+
     implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
     implementation("com.google.firebase:firebase-ai")
     implementation("com.google.firebase:firebase-firestore")
