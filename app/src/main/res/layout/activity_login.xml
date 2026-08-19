@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F8F9FA">
+
+    <!-- Logo / Título do App -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SGC Vendas"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Faça login para gerenciar o PDV"
+        android:textSize="16sp"
+        android:textColor="#6c757d"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- Campo de E-mail Moderno -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail do Vendedor"
+        app:startIconDrawable="@android:drawable/ic_dialog_email"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo de Senha com "Olhinho" Integrado -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"
+        app:startIconDrawable="@android:drawable/ic_secure"
+        app:endIconMode="password_toggle"
+        android:layout_marginBottom="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Botão Principal -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="ENTRAR NO CAIXA"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="#2E7D32"/>
+
+    <!-- Link para Cadastro -->
+    <TextView
+        android:id="@+id/txtIrParaCadastro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Novo vendedor? Solicite cadastro"
+        android:textColor="#2E7D32"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"/>
+
+</LinearLayout>
