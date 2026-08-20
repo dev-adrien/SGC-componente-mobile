@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Painel do Vendedor"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Como você deseja alimentar o estoque hoje?"
+        android:textSize="14sp"
+        android:textColor="#6c757d"
+        android:textAlignment="center"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- Botão para o fluxo que já criamos -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMenuProdutoManual"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="CADASTRO MANUAL"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:backgroundTint="#2E7D32"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botão para o fluxo que vamos criar a seguir -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMenuNotaFiscal"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="LER NOTA FISCAL (IA)"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:strokeColor="#2E7D32"
+        android:textColor="#2E7D32"/>
+
+</LinearLayout>

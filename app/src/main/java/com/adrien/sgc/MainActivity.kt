@@ -1,23 +1,27 @@
-   package com.adrien.sgc
+package com.adrien.sgc
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.adrien.sgc.ui.theme.SistemaGestorDeComércioSysGestorTheme
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.activity_main)
 
+        val btnManual = findViewById<MaterialButton>(R.id.btnMenuProdutoManual)
+        val btnIA = findViewById<MaterialButton>(R.id.btnMenuNotaFiscal)
 
+        btnManual.setOnClickListener {
+            val intent = Intent(this, CadastroProdutoActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnIA.setOnClickListener {
+            Toast.makeText(this, "Em breve: Leitura de Nota Fiscal com IA!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
