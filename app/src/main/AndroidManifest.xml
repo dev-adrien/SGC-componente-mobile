@@ -29,7 +29,7 @@
         <activity android:name=".CadastroUsuarioActivity" />
         <activity android:name=".CadastroProdutoActivity" />
         <activity android:name=".CodigoBarrasActivity" />
-
+        <activity android:name=".UploadNotaActivity" />
     </application>
 
 </manifest>

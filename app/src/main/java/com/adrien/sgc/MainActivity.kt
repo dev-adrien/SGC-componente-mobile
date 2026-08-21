@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnIA.setOnClickListener {
-            Toast.makeText(this, "Em breve: Leitura de Nota Fiscal com IA!", Toast.LENGTH_SHORT).show()
+            btnIA.setOnClickListener {
+                val intent = Intent(this, UploadNotaActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
