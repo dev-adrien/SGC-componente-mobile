@@ -30,6 +30,7 @@
         <activity android:name=".CadastroProdutoActivity" />
         <activity android:name=".CodigoBarrasActivity" />
         <activity android:name=".UploadNotaActivity" />
+        <activity android:name=".EstoqueActivity" />
     </application>
 
 </manifest>

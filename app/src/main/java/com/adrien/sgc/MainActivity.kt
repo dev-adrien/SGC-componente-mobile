@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnManual = findViewById<MaterialButton>(R.id.btnMenuProdutoManual)
         val btnIA = findViewById<MaterialButton>(R.id.btnMenuNotaFiscal)
+        val btnVisualizarEstoque = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnMenuVisualizarEstoque)
 
         btnManual.setOnClickListener {
             val intent = Intent(this, CadastroProdutoActivity::class.java)
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, UploadNotaActivity::class.java)
                 startActivity(intent)
             }
+        }
+
+        btnVisualizarEstoque.setOnClickListener {
+            startActivity(Intent(this, EstoqueActivity::class.java))
         }
     }
 }
