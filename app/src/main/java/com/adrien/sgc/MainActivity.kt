@@ -14,7 +14,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnManual = findViewById<MaterialButton>(R.id.btnMenuProdutoManual)
         val btnIA = findViewById<MaterialButton>(R.id.btnMenuNotaFiscal)
-        val btnVisualizarEstoque = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnMenuVisualizarEstoque)
+        val btnVisualizarEstoque = findViewById<MaterialButton>(R.id.btnMenuVisualizarEstoque)
+        val btnCheckout = findViewById<MaterialButton>(R.id.btnMenuCheckout)
 
         btnManual.setOnClickListener {
             val intent = Intent(this, CadastroProdutoActivity::class.java)
@@ -30,6 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         btnVisualizarEstoque.setOnClickListener {
             startActivity(Intent(this, EstoqueActivity::class.java))
+        }
+
+        btnCheckout.setOnClickListener {
+            startActivity(Intent(this, CheckoutActivity::class.java))
         }
     }
 }
