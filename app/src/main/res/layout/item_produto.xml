@@ -58,7 +58,20 @@
             android:text="Cód: -"
             android:textSize="12sp"
             android:textColor="#9E9E9E"
-            android:layout_marginTop="6dp"/>
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerCodigo"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="VER CÓDIGO / ETIQUETA"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            app:strokeColor="#2E7D32"
+            app:cornerRadius="8dp"/>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
