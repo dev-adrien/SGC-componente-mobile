@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagamento Pix"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txtValorFinalPagamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R$ 0,00"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Placeholder QR Code -->
+    <ImageView
+        android:id="@+id/imgQrCodePix"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:src="@android:drawable/ic_menu_gallery"
+        android:background="#E0E0E0"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chave Pix:"
+        android:textSize="14sp"
+        android:textColor="#757575"/>
+
+    <TextView
+        android:id="@+id/txtChavePix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="adrienbzr@outlook.com"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="36dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFinalizarVenda"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="FINALIZAR VENDA"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="#2E7D32"
+        app:cornerRadius="12dp"/>
+</LinearLayout>
