@@ -38,19 +38,24 @@ class PagamentoActivity : AppCompatActivity() {
     }
 
     private fun efetivarBaixaNoEstoqueERegistrarVenda(itens: List<ItemVenda>, total: Double) {
-        // Executa em transação para garantir que os estoques batam
         db.runTransaction { transaction ->
-            // 1. Valida e debita o estoque de cada produto
             for (item in itens) {
                 val produtoRef = db.collection("produtos").document(item.produtoId)
                 val snapshot = transaction.get(produtoRef)
-                val estoqueAtual = snapshot.getLong("quantidadeEstoque") ?: 0
 
-                val novoEstoque = (estoqueAtual - item.quantidade).coerceAtLeast(0)
+                if (!snapshot.exists()) {
+                    throw Exception("Produto '${item.nome}' não encontrado no banco.")
+                }
+
+                val estoqueAtual = snapshot.getLong("quantidadeEstoque") ?: 0
+                if (estoqueAtual < item.quantidade) {
+                    throw Exception("Estoque insuficiente para '${item.nome}'. Disponível: $estoqueAtual")
+                }
+
+                val novoEstoque = estoqueAtual - item.quantidade
                 transaction.update(produtoRef, "quantidadeEstoque", novoEstoque)
             }
 
-            // 2. Salva o registro da venda no histórico
             val vendaRef = db.collection("vendas").document()
             val novaVenda = Venda(
                 id = vendaRef.id,
@@ -69,7 +74,7 @@ class PagamentoActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }.addOnFailureListener { e ->
-            Toast.makeText(this, "Erro ao finalizar venda: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
             findViewById<MaterialButton>(R.id.btnFinalizarVenda).isEnabled = true
         }
     }

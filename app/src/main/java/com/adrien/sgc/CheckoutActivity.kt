@@ -7,7 +7,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +26,6 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var txtTotal: TextView
     private lateinit var actvBusca: AutoCompleteTextView
 
-    // Launcher para a tela da câmera que retornará os EANs escaneados
     private val scannerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -54,13 +52,11 @@ class CheckoutActivity : AppCompatActivity() {
 
         carregarCatalogoProdutos()
 
-        // Botão Scanner Contínuo
         btnScanner.setOnClickListener {
             val intent = Intent(this, ScannerContinuoActivity::class.java)
             scannerLauncher.launch(intent)
         }
 
-        // Cancelar Venda: salva a venda como cancelada sem alterar estoque
         btnCancelar.setOnClickListener {
             if (carrinho.isEmpty()) {
                 finish()
@@ -69,7 +65,6 @@ class CheckoutActivity : AppCompatActivity() {
             salvarVendaCancelada()
         }
 
-        // Ir para Pagamento
         btnPagamento.setOnClickListener {
             if (carrinho.isEmpty()) {
                 Toast.makeText(this, "Adicione itens ao carrinho primeiro!", Toast.LENGTH_SHORT).show()
@@ -108,8 +103,21 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun adicionarAoCarrinho(produto: Produto) {
+        if (produto.quantidadeEstoque <= 0) {
+            Toast.makeText(this, "Produto '${produto.nome}' está esgotado!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val itemExistente = carrinho.find { it.produtoId == produto.id }
         if (itemExistente != null) {
+            if (itemExistente.quantidade + 1 > produto.quantidadeEstoque) {
+                Toast.makeText(
+                    this,
+                    "Limite atingido! Estoque disponível: ${produto.quantidadeEstoque}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
             itemExistente.quantidade++
         } else {
             carrinho.add(

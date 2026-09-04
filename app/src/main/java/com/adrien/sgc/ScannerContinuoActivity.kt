@@ -18,6 +18,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
@@ -27,6 +28,7 @@ class ScannerContinuoActivity : AppCompatActivity() {
     private val eansConfirmados = arrayListOf<String>()
     private var emPausaModal = false
     private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private val db = FirebaseFirestore.getInstance()
 
     private val requisitarPermissaoLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -98,7 +100,7 @@ class ScannerContinuoActivity : AppCompatActivity() {
                         val eanDetectado = barcodes[0].rawValue ?: ""
                         if (eanDetectado.isNotEmpty()) {
                             emPausaModal = true
-                            runOnUiThread { exibirModalConfirmacao(eanDetectado) }
+                            verificarEstoqueEExibirModal(eanDetectado)
                         }
                     }
                 }
@@ -108,10 +110,60 @@ class ScannerContinuoActivity : AppCompatActivity() {
         }
     }
 
-    private fun exibirModalConfirmacao(ean: String) {
+    private fun verificarEstoqueEExibirModal(ean: String) {
+        // Busca primeiro pelo campo codigoEan
+        db.collection("produtos")
+            .whereEqualTo("codigoEan", ean)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val doc = querySnapshot.documents[0]
+                    validarDocumentoEstoque(doc, ean)
+                } else {
+                    // Se não achou pelo campo, tenta pelo ID do documento
+                    db.collection("produtos").document(ean).get()
+                        .addOnSuccessListener { doc ->
+                            if (doc.exists()) {
+                                validarDocumentoEstoque(doc, ean)
+                            } else {
+                                runOnUiThread {
+                                    Toast.makeText(this, "Produto não cadastrado ($ean)", Toast.LENGTH_SHORT).show()
+                                    emPausaModal = false
+                                }
+                            }
+                        }
+                        .addOnFailureListener {
+                            runOnUiThread { emPausaModal = false }
+                        }
+                }
+            }
+            .addOnFailureListener {
+                runOnUiThread { emPausaModal = false }
+            }
+    }
+
+    private fun validarDocumentoEstoque(doc: com.google.firebase.firestore.DocumentSnapshot, ean: String) {
+        val nome = doc.getString("nome") ?: "Produto"
+        val estoque = doc.getLong("quantidadeEstoque") ?: 0
+        val jaAdicionados = eansConfirmados.count { it == ean }
+
+        runOnUiThread {
+            if (estoque <= 0) {
+                Toast.makeText(this, "'$nome' está esgotado!", Toast.LENGTH_SHORT).show()
+                emPausaModal = false
+            } else if (jaAdicionados >= estoque) {
+                Toast.makeText(this, "Limite de estoque atingido para '$nome' ($estoque disp.)", Toast.LENGTH_SHORT).show()
+                emPausaModal = false
+            } else {
+                exibirModalConfirmacao(ean, nome, estoque - jaAdicionados)
+            }
+        }
+    }
+
+    private fun exibirModalConfirmacao(ean: String, nome: String, disponivel: Long) {
         AlertDialog.Builder(this)
-            .setTitle("Código Detectado")
-            .setMessage("Deseja adicionar o produto com código $ean?")
+            .setTitle("Produto Detectado")
+            .setMessage("$nome\nDisponível: $disponivel\n\nDeseja adicionar ao carrinho?")
             .setPositiveButton("Adicionar") { _, _ ->
                 eansConfirmados.add(ean)
                 Toast.makeText(this, "Adicionado!", Toast.LENGTH_SHORT).show()
