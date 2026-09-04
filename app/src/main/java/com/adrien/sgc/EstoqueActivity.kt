@@ -1,5 +1,6 @@
 package com.adrien.sgc
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
@@ -23,10 +24,18 @@ class EstoqueActivity : AppCompatActivity() {
         rvProdutos = findViewById(R.id.rvProdutos)
 
         rvProdutos.layoutManager = LinearLayoutManager(this)
-        adapter = ProdutoAdapter(listaProdutos)
-        rvProdutos.adapter = adapter
 
         carregarProdutosDoFirestore()
+
+        adapter = ProdutoAdapter(listaProdutos) { produto ->
+            val intent = Intent(this, CodigoBarrasActivity::class.java).apply {
+                putExtra("PRODUTO_ID", produto.id)
+                putExtra("PRODUTO_NOME", produto.nome)
+                putExtra("PRODUTO_EAN", produto.codigoEan)
+            }
+            startActivity(intent)
+        }
+        rvProdutos.adapter = adapter
     }
 
     private fun carregarProdutosDoFirestore() {
