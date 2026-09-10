@@ -152,7 +152,7 @@ class UploadNotaActivity : AppCompatActivity() {
                                 "nome" to nome,
                                 "preco" to preco,
                                 "quantidadeEstoque" to quantidadeNova,
-                                "codigoBarras" to codigoEan
+                                "codigoEan" to codigoEan
                             )
 
                             db.collection("produtos").add(produtoNovoMap)
