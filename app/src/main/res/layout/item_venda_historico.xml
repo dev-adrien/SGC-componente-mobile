@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#E0E0E0"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/txtStatusVenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONCLUIDA"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="#E8F5E9"
+                android:textColor="#2E7D32"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtDataVenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00/00/0000 00:00"
+                android:textSize="12sp"
+                android:textColor="#757575"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtIdVenda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID: -"
+            android:textSize="11sp"
+            android:textColor="#9E9E9E"
+            android:layout_marginTop="6dp"/>
+
+        <TextView
+            android:id="@+id/txtResumoItens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Itens: ..."
+            android:textSize="14sp"
+            android:textColor="#424242"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/txtValorTotalVenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total: R$ 0,00"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:gravity="end"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

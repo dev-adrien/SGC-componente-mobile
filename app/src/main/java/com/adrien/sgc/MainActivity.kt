@@ -36,5 +36,9 @@ class MainActivity : AppCompatActivity() {
         btnCheckout.setOnClickListener {
             startActivity(Intent(this, CheckoutActivity::class.java))
         }
+
+        findViewById<MaterialButton>(R.id.btnMenuHistoricoVendas).setOnClickListener {
+            startActivity(Intent(this, HistoricoVendasActivity::class.java))
+        }
     }
 }
