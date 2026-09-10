@@ -39,6 +39,9 @@
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".PagamentoActivity" />
         <activity android:name=".ScannerContinuoActivity" />
+        <activity
+            android:name=".HistoricoVendasActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
