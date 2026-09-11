@@ -30,107 +30,109 @@ class CadastroProdutoActivity : AppCompatActivity() {
             val precoTexto = edtPreco.text.toString().trim()
             val estoqueTexto = edtEstoque.text.toString().trim()
 
-            if (nome.isEmpty() || precoTexto.isEmpty() || estoqueTexto.isEmpty()) {
-                Toast.makeText(this, "Preencha nome, preço e quantidade!", Toast.LENGTH_SHORT).show()
+            val quantidade = estoqueTexto.toIntOrNull()
+            if (quantidade == null || quantidade <= 0) {
+                Toast.makeText(this, "Informe uma quantidade válida!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val preco = precoTexto.toDoubleOrNull() ?: 0.0
-            val estoque = estoqueTexto.toIntOrNull() ?: 0
+            // Fluxo 1: Usuário informou Código EAN ou ID
+            if (codigo.isNotEmpty()) {
+                btnSalvar.isEnabled = false
+                processarPorCodigoOuId(codigo, nome, precoTexto, quantidade) {
+                    btnSalvar.isEnabled = true
+                }
+                return@setOnClickListener
+            }
+
+            // Fluxo 2: Cadastro novo sem código
+            val preco = precoTexto.toDoubleOrNull()
+            if (nome.isEmpty() || preco == null) {
+                Toast.makeText(this, "Para cadastrar sem código, preencha Nome e Preço!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             btnSalvar.isEnabled = false
-            processarProduto(codigo, nome, preco, estoque) {
+            cadastrarNovoProduto(nome, preco, quantidade, codigo = "") {
                 btnSalvar.isEnabled = true
             }
         }
     }
 
-    private fun processarProduto(
+    private fun processarPorCodigoOuId(
         codigo: String,
         nome: String,
-        preco: Double,
-        quantidadeAdicional: Int,
-        onConcluido: () -> Unit
+        precoTexto: String,
+        quantidade: Int,
+        onFinalizado: () -> Unit
     ) {
         val colecao = db.collection("produtos")
 
-        // 1. Se informou código, verifica por código primeiro
-        if (codigo.isNotEmpty()) {
-            colecao.whereEqualTo("codigoEan", codigo).limit(1).get()
-                .addOnSuccessListener { query ->
-                    if (!query.isEmpty) {
-                        atualizarEstoque(query.documents[0], nome, preco, quantidadeAdicional, codigo)
-                    } else {
-                        buscarPorNome(nome, preco, quantidadeAdicional, codigo, onConcluido)
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Erro na verificação: ${e.message}", Toast.LENGTH_SHORT).show()
-                    onConcluido()
-                }
-        } else {
-            buscarPorNome(nome, preco, quantidadeAdicional, "", onConcluido)
-        }
-    }
-
-    private fun buscarPorNome(
-        nome: String,
-        preco: Double,
-        quantidadeAdicional: Int,
-        codigo: String,
-        onConcluido: () -> Unit
-    ) {
-        db.collection("produtos")
-            .whereEqualTo("nome", nome)
-            .limit(1)
-            .get()
+        // 1. Tenta encontrar por codigoEan
+        colecao.whereEqualTo("codigoEan", codigo).limit(1).get()
             .addOnSuccessListener { query ->
                 if (!query.isEmpty) {
-                    atualizarEstoque(query.documents[0], nome, preco, quantidadeAdicional, codigo)
+                    incrementarEstoque(query.documents[0], quantidade, codigo)
                 } else {
-                    cadastrarNovo(nome, preco, quantidadeAdicional, codigo, onConcluido)
+                    // 2. Se não achou por EAN, tenta encontrar diretamente pelo ID do documento
+                    colecao.document(codigo).get()
+                        .addOnSuccessListener { doc ->
+                            if (doc.exists()) {
+                                incrementarEstoque(doc, quantidade, doc.getString("codigoEan").orEmpty())
+                            } else {
+                                // Não encontrou nem por EAN nem por ID: trata como produto novo
+                                val preco = precoTexto.toDoubleOrNull()
+                                if (nome.isEmpty() || preco == null) {
+                                    Toast.makeText(
+                                        this,
+                                        "Código/ID não encontrado! Preencha Nome e Preço para cadastrar este novo item.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    onFinalizado()
+                                } else {
+                                    cadastrarNovoProduto(nome, preco, quantidade, codigo, onFinalizado)
+                                }
+                            }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Erro ao buscar por ID: ${it.message}", Toast.LENGTH_SHORT).show()
+                            onFinalizado()
+                        }
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro na verificação: ${e.message}", Toast.LENGTH_SHORT).show()
-                onConcluido()
+                Toast.makeText(this, "Erro ao consultar: ${e.message}", Toast.LENGTH_SHORT).show()
+                onFinalizado()
             }
     }
 
-    private fun atualizarEstoque(
+    private fun incrementarEstoque(
         doc: DocumentSnapshot,
-        nome: String,
-        preco: Double,
-        quantidadeAdicional: Int,
-        codigo: String
+        quantidade: Int,
+        codigoFinal: String
     ) {
-        val updates = mutableMapOf<String, Any>(
-            "quantidadeEstoque" to FieldValue.increment(quantidadeAdicional.toLong()),
-            "preco" to preco
-        )
+        val nomeExistente = doc.getString("nome") ?: "Produto"
 
-        val eanExistente = doc.getString("codigoEan").orEmpty()
-        val eanFinal = if (eanExistente.isNotEmpty()) eanExistente else codigo
-        if (eanExistente.isEmpty() && codigo.isNotEmpty()) {
-            updates["codigoEan"] = codigo
-        }
-
-        doc.reference.update(updates)
+        doc.reference.update("quantidadeEstoque", FieldValue.increment(quantidade.toLong()))
             .addOnSuccessListener {
-                Toast.makeText(this, "Estoque de '$nome' atualizado (+${quantidadeAdicional})!", Toast.LENGTH_SHORT).show()
-                abrirCodigoBarras(doc.id, nome, eanFinal)
+                Toast.makeText(
+                    this,
+                    "Estoque adicionado (+${quantidade}) em '$nomeExistente'!",
+                    Toast.LENGTH_LONG
+                ).show()
+                abrirCodigoBarras(doc.id, nomeExistente, codigoFinal)
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao atualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erro ao somar estoque: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun cadastrarNovo(
+    private fun cadastrarNovoProduto(
         nome: String,
         preco: Double,
         quantidade: Int,
         codigo: String,
-        onConcluido: () -> Unit
+        onFinalizado: () -> Unit
     ) {
         val novoProduto = Produto(
             id = "",
@@ -140,17 +142,18 @@ class CadastroProdutoActivity : AppCompatActivity() {
             quantidadeEstoque = quantidade
         )
 
-        db.collection("produtos").add(novoProduto)
+        db.collection("produtos")
+            .add(novoProduto)
             .addOnSuccessListener { docRef ->
                 val idGerado = docRef.id
                 docRef.update("id", idGerado).addOnSuccessListener {
-                    Toast.makeText(this, "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Novo produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
                     abrirCodigoBarras(idGerado, nome, codigo)
                 }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Erro ao cadastrar: ${e.message}", Toast.LENGTH_SHORT).show()
-                onConcluido()
+                onFinalizado()
             }
     }
 
