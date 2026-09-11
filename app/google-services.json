@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1080456609357",
+    "project_id": "sysgestor-sgc",
+    "storage_bucket": "sysgestor-sgc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080456609357:android:521e69446b18dc64f9e604",
+        "android_client_info": {
+          "package_name": "com.adrien.sgc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-U3xtvVdmnOuUyD4hBbfhFksuTpukuDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

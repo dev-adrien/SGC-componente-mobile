@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Cabeçalho -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Painel do Vendedor"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="O que você deseja fazer hoje?"
+            android:textSize="16sp"
+            android:textColor="#6c757d"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- SEÇÃO: PONTO DE VENDA -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ponto de Venda"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#9E9E9E"
+            android:textAllCaps="true"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Novo Botão: Checkout -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenuCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="NOVA VENDA"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:backgroundTint="#2E7D32"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- SEÇÃO: GESTÃO DE ESTOQUE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gestão de Estoque"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#9E9E9E"
+            android:textAllCaps="true"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Novo Botão: Visualizar Produtos -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenuVisualizarEstoque"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="VISUALIZAR ESTOQUE"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#2E7D32"
+            android:textColor="#2E7D32"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Botão Antigo: Cadastro Manual -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenuProdutoManual"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="CADASTRO MANUAL"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#2E7D32"
+            android:textColor="#2E7D32"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Botão Antigo: IA -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenuNotaFiscal"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="LER NOTA FISCAL (IA)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#2E7D32"
+            android:textColor="#2E7D32"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- SEÇÃO: RELATÓRIOS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Relatórios"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#9E9E9E"
+            android:textAllCaps="true"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Novo Botão: Visualizar Vendas -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenuHistoricoVendas"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="HISTÓRICO DE VENDAS"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#424242"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</ScrollView>
