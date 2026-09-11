@@ -1,9 +1,13 @@
 package com.adrien.sgc
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import java.text.NumberFormat
@@ -11,7 +15,8 @@ import java.util.Locale
 
 class ProdutoAdapter(
     private val listaProdutos: List<Produto>,
-    private val onVerCodigoClick: (Produto) -> Unit
+    private val onVerCodigoClick: (Produto) -> Unit,
+    private val onEditarClick: (Produto) -> Unit
 ) : RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder>() {
 
     class ProdutoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -19,6 +24,8 @@ class ProdutoAdapter(
         val txtPreco: TextView = view.findViewById(R.id.txtPrecoProduto)
         val txtEstoque: TextView = view.findViewById(R.id.txtEstoqueProduto)
         val txtCodigo: TextView = view.findViewById(R.id.txtCodigoBarras)
+        val btnCopiarCodigo: MaterialButton = view.findViewById(R.id.btnCopiarCodigo)
+        val btnEditarProduto: MaterialButton = view.findViewById(R.id.btnEditarProduto)
         val btnVerCodigo: MaterialButton = view.findViewById(R.id.btnVerCodigo)
     }
 
@@ -36,12 +43,21 @@ class ProdutoAdapter(
         holder.txtPreco.text = formatadorMoeda.format(produto.preco)
         holder.txtEstoque.text = "Qtd: ${produto.quantidadeEstoque}"
 
-        val codigoExibicao = if (produto.codigoEan.isNotEmpty()) produto.codigoEan else produto.id
-        holder.txtCodigo.text = "Cód/ID: $codigoExibicao"
+        val codigoConteudo = if (produto.codigoEan.isNotEmpty()) produto.codigoEan else produto.id
+        holder.txtCodigo.text = "Cód/ID: $codigoConteudo"
 
-        holder.btnVerCodigo.setOnClickListener {
-            onVerCodigoClick(produto)
+        val copiarParaClipboard: (String) -> Unit = { valor ->
+            val clipboard = holder.itemView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Código do Produto", valor)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(holder.itemView.context, "Código copiado: $valor", Toast.LENGTH_SHORT).show()
         }
+
+        holder.btnCopiarCodigo.setOnClickListener { copiarParaClipboard(codigoConteudo) }
+        holder.txtCodigo.setOnClickListener { copiarParaClipboard(codigoConteudo) }
+
+        holder.btnEditarProduto.setOnClickListener { onEditarClick(produto) }
+        holder.btnVerCodigo.setOnClickListener { onVerCodigoClick(produto) }
     }
 
     override fun getItemCount(): Int = listaProdutos.size

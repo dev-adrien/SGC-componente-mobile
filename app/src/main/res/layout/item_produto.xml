@@ -51,15 +51,38 @@
                 android:textColor="#616161"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtCodigoBarras"
-            android:layout_width="wrap_content"
+        <!-- Linha do Código com botão de copiar -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cód: -"
-            android:textSize="12sp"
-            android:textColor="#9E9E9E"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="12dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/txtCodigoBarras"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cód: -"
+                android:textSize="13sp"
+                android:textColor="#757575"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopiarCodigo"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="COPIAR"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D32"/>
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVerCodigo"
