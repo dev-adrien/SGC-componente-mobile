@@ -84,17 +84,40 @@
                 android:textColor="#2E7D32"/>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnVerCodigo"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <!-- Botões de Ação: Editar e Código -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="VER CÓDIGO / ETIQUETA"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="#2E7D32"
-            app:strokeColor="#2E7D32"
-            app:cornerRadius="8dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditarProduto"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="EDITAR"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#1976D2"
+                app:strokeColor="#1976D2"
+                app:cornerRadius="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerCodigo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="CÓDIGO"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D32"
+                app:strokeColor="#2E7D32"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
