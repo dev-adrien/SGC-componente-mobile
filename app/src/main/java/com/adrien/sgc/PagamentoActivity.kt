@@ -6,6 +6,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
 import java.util.Date
@@ -39,6 +40,8 @@ class PagamentoActivity : AppCompatActivity() {
 
     private fun efetivarBaixaNoEstoqueERegistrarVenda(itens: List<ItemVenda>, total: Double) {
         db.runTransaction { transaction ->
+            val atualizacoesEstoque = mutableListOf<Pair<DocumentReference, Long>>()
+
             for (item in itens) {
                 val produtoRef = db.collection("produtos").document(item.produtoId)
                 val snapshot = transaction.get(produtoRef)
@@ -53,7 +56,11 @@ class PagamentoActivity : AppCompatActivity() {
                 }
 
                 val novoEstoque = estoqueAtual - item.quantidade
-                transaction.update(produtoRef, "quantidadeEstoque", novoEstoque)
+                atualizacoesEstoque.add(Pair(produtoRef, novoEstoque))
+            }
+
+            for ((ref, novoEstoque) in atualizacoesEstoque) {
+                transaction.update(ref, "quantidadeEstoque", novoEstoque)
             }
 
             val vendaRef = db.collection("vendas").document()
@@ -66,6 +73,7 @@ class PagamentoActivity : AppCompatActivity() {
                 chavePix = chavePixEmail
             )
             transaction.set(vendaRef, novaVenda)
+
             null
         }.addOnSuccessListener {
             Toast.makeText(this, "Venda finalizada com sucesso!", Toast.LENGTH_LONG).show()
